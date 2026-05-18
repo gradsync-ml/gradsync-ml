@@ -31,6 +31,9 @@ Clone the repository and set up the `uv` virtual environment. GradSync is instal
 git clone [https://github.com/YOUR-USERNAME/gradsync-ml.git](https://github.com/YOUR-USERNAME/gradsync-ml.git)
 cd gradsync-ml
 
+#compile proto
+sh compile_proto.sh
+
 # Initialize the virtual environment and install dependencies
 uv venv
 uv pip install -e ".[dev]"
