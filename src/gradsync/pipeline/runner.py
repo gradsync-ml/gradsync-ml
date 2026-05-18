@@ -1,13 +1,13 @@
 import torch
 import torch.nn as nn
-from comms.server import serve_pipeline
-from comms.client import PipelineClient
+from gradsync.comms.server import serve_pipeline
+from gradsync.comms.client import PipelineClient
 from .utils import pack_tensor, unpack_tensor
 import asyncio
 import time
 import threading
 
-from telemetry.client import TelemetryClient, get_vram_gb
+from gradsync.telemetry.client import TelemetryClient, get_vram_gb
 
 class BuddyNode(nn.Module):
     def __init__(self, layer_list):

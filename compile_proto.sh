@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Ensure we are running from the root of the project
 cd "$(dirname "$0")"
 
 case "$(uname -s 2>/dev/null || echo unknown)" in
@@ -12,37 +13,46 @@ esac
 
 echo "Generating protobuf stubs on ${platform}..."
 
-mkdir -p packages/comms/src/comms/proto
+# 1. Compile Comms Protos
+echo "Compiling tensor_service.proto..."
+mkdir -p src/gradsync/comms/proto
 uv run python -m grpc_tools.protoc \
-  -I packages/comms/proto \
-  --python_out=packages/comms/src/comms/proto \
-  --grpc_python_out=packages/comms/src/comms/proto \
-  packages/comms/proto/tensor_service.proto
+  -I src/gradsync/comms/proto \
+  --python_out=src/gradsync/comms/proto \
+  --grpc_python_out=src/gradsync/comms/proto \
+  src/gradsync/comms/proto/tensor_service.proto
 
-mkdir -p packages/orchestrator/src/orchestrator/proto
+# 2. Compile Orchestrator Protos
+echo "Compiling cluster_service.proto..."
+mkdir -p src/gradsync/orchestrator/proto
 uv run python -m grpc_tools.protoc \
-  -I packages/orchestrator/proto \
-  --python_out=packages/orchestrator/src/orchestrator/proto \
-  --grpc_python_out=packages/orchestrator/src/orchestrator/proto \
-  packages/orchestrator/proto/cluster_service.proto
+  -I src/gradsync/orchestrator/proto \
+  --python_out=src/gradsync/orchestrator/proto \
+  --grpc_python_out=src/gradsync/orchestrator/proto \
+  src/gradsync/orchestrator/proto/cluster_service.proto
 
+# 3. Patch the gRPC relative import bug
+echo "Patching Python relative imports..."
 uv run python - <<'PY'
 from pathlib import Path
 
 patches = {
-    Path("packages/comms/src/comms/proto/tensor_service_pb2_grpc.py"): (
+    Path("src/gradsync/comms/proto/tensor_service_pb2_grpc.py"): (
         "import tensor_service_pb2 as",
         "from . import tensor_service_pb2 as",
     ),
-    Path("packages/orchestrator/src/orchestrator/proto/cluster_service_pb2_grpc.py"): (
+    Path("src/gradsync/orchestrator/proto/cluster_service_pb2_grpc.py"): (
         "import cluster_service_pb2 as",
         "from . import cluster_service_pb2 as",
     ),
 }
 
 for path, (old, new) in patches.items():
-    text = path.read_text()
-    path.write_text(text.replace(old, new))
+    if path.exists():
+        text = path.read_text()
+        path.write_text(text.replace(old, new))
+    else:
+        print(f"Warning: {path} not found for patching.")
 PY
 
 echo "Generated protobuf stubs successfully."

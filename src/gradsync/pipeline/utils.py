@@ -10,7 +10,7 @@ import numpy as np
 import logging
 
 # Import from your new compression lab
-from compression_lab import (
+from gradsync.compression_lab import (
     TensorCompressor, 
     CompressionType, 
     get_optimal_compression

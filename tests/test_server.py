@@ -11,9 +11,9 @@ import time
 
 import pytest
 
-from orchestrator.node import ClusterNode, NodeState
-from orchestrator.server import ClusterServer
-from orchestrator.proto import cluster_service_pb2
+from gradsync.orchestrator.node import ClusterNode, NodeState
+from gradsync.orchestrator.server import ClusterServer
+from gradsync.orchestrator.proto import cluster_service_pb2
 
 
 # ---------------------------------------------------------------------------

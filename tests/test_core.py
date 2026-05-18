@@ -1,6 +1,6 @@
 import pytest
 
-from pipeline.core import validate_cluster_config
+from gradsync.pipeline.core import validate_cluster_config
 
 
 def test_rejects_duplicate_election_nodes():

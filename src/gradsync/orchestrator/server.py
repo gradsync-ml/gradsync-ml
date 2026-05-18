@@ -2,7 +2,7 @@ import grpc
 from concurrent import futures
 from .proto import cluster_service_pb2
 from .proto import cluster_service_pb2_grpc
-from common.hardware import get_available_memory
+from gradsync.common.hardware import get_available_memory
 from .states import NodeState
 
 

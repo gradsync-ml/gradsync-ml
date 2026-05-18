@@ -17,7 +17,7 @@ from typing import Optional
 
 import pytest
 
-from orchestrator.node import ClusterNode, NodeState
+from gradsync.orchestrator.node import ClusterNode, NodeState
 
 
 # ---------------------------------------------------------------------------

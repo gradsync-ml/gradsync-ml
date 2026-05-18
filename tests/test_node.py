@@ -8,8 +8,8 @@ This isolates the Raft state machine logic from network I/O entirely.
 import pytest
 from unittest.mock import patch, MagicMock, call
 
-from orchestrator.node import ClusterNode, NodeState
-from orchestrator.proto import cluster_service_pb2
+from gradsync.orchestrator.node import ClusterNode, NodeState
+from gradsync.orchestrator.proto import cluster_service_pb2
 
 
 # ---------------------------------------------------------------------------

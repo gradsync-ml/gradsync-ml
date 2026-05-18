@@ -3,13 +3,13 @@ import torch
 import torch.nn as nn
 from .runner import HeadNodeRunner, TailNodeRunner, MiddleNodeRunner
 from .utils import detect_device
-from orchestrator.node import ClusterNode
+from gradsync.orchestrator.node import ClusterNode
 import time
 import json
 import asyncio
-from common.hardware import get_available_memory
+from gradsync.common.hardware import get_available_memory
 
-from telemetry.server import start_telemetry_server
+from gradsync.telemetry.server import start_telemetry_server
 
 
 def _ensure_unique_endpoints(endpoints: list[str], field_name: str) -> None:
